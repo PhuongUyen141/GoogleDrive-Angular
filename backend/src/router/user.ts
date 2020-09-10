@@ -32,7 +32,8 @@ router.post('/', async (res, reps) => {
                 })
                 await doc.set({
                     username: fireBaseUser.displayName,
-                    uuid: fireBaseUser.uid
+                    uuid: fireBaseUser.uid,
+                    password: input.password,
                 })
                 reps.send({
                     message: input.email + " is created."
@@ -41,7 +42,7 @@ router.post('/', async (res, reps) => {
         }
     } catch (e) {
         reps.send({
-            message: input.email + " is created failed."
+            message: input.email + " is create failed."
         });
     }
 })
@@ -50,13 +51,28 @@ router.post('/', async (res, reps) => {
 router.post('/googleUser', async (res, reps) => {
     const input = res.body;
     try {
-        let doc =  admin.firestore().collection('user').doc(input);
-        reps.send({
-            message: input.email + " is added."
-        });
+        let doc = await admin.firestore().collection('user').doc(input.email);
+        if ((await (doc.get())).exists) {
+            reps.send({
+                message: input.email + " is already added.",
+            })
+        } else {
+            let fireBaseUser = await auth.createUser({
+                email: input.email,
+                password: input.password,
+            })
+            await doc.set({
+                username: fireBaseUser.email,
+                password: input.password,
+                uuid: fireBaseUser.uid
+            })
+            reps.send({
+                message: input.email + " is added."
+            })
+        }
     } catch (e) {
         reps.send({
-            message: input.email + " is created failed."
+            message: input.email + " is create failed."
         });
     }
 })

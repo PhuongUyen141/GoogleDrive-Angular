@@ -78,4 +78,8 @@ export class MainPageComponent implements OnInit {
     await this.apiServices.removeFolder(path);
     await this.breadCrumbServices.refreshAfterAction();
   }
+
+  showInfo(){
+
+  }
 }

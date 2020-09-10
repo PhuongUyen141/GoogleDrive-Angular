@@ -6,6 +6,11 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 import { DialogSearchComponent} from '../dialog-search/dialog-search.component';
 import { BreadcrumbService } from 'src/app/services/breadcrumb/breadcrumb.service';
+import {FormControl} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+
+
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
@@ -33,15 +38,31 @@ export class NavBarComponent implements OnInit {
         this.screenWidth = window.innerWidth;
         // console.log( this.screenWidth);
   } 
-   ngOnInit(): void {
-    this.getScreenSize();
-  }
+
   openDialog1() {
     this.dialog.open(DialogSearchComponent);
   }
   openDialog() {
 
     this.dialog.open(DialogComponent);
+  }
+
+  myControl = new FormControl();
+  options: string[] = ['One', 'Two', 'Three'];
+  filteredOptions: Observable<string[]>;
+
+  ngOnInit() {
+    this.getScreenSize();
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
   }
   
 }

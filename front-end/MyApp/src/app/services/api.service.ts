@@ -8,7 +8,7 @@ import {saveFile} from '../ults/dowload-helper';
 import { AuthService } from './auth.service';
 const API_BIN = "bin"
 const API_DOWNLOAD = "file"
-const API_COPY = 'copy'
+const API_DELETE = 'remove'
 
 @Injectable({
   providedIn: 'root'
@@ -105,15 +105,21 @@ export class ApiService {
 
   }
 
-  async copyFile(path: string){
+  async delete(path: string) {
+    // TODO FIX AUTH
     try {
-      let res = await this.http.post(environment.endpoint + API_COPY, {
+      await this.http.post(environment.endpoint + API_DELETE, {
         source: path
       }).toPromise()
 
     } catch (error) {
       console.log(error)
     }
+
+
   }
+
+  
+
 
 }

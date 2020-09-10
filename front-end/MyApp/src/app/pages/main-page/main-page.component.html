@@ -1,5 +1,14 @@
+<div *ngIf="this.folders.length == 0 && this.files.length == 0" class="container" style="position: relative; width: 100%; height: 100vh; overflow-y: hidden; overflow-x: hidden;">
+    <uploader></uploader>
+    <div>
+        <h2>Place for all your files and folders</h2>
+        <p class="sentence">You can drag files or folders right into USpace</p>
+    </div>
+</div>
+
 <div class="container" style="position: relative;">
     <uploader></uploader>
+
     <p *ngIf="this.folders.length != 0">Folder</p>
     <div class="row">
         <div class="col" *ngIf="this.folders.length != 0">
@@ -8,7 +17,7 @@
             <!-- <app-folder *ngFor="let item of this.folerService.folderBD" [name]="item.name"></app-folder> -->
         </div>
     </div>
-    <p>File</p>
+    <p *ngIf="this.files.length != 0">File</p>
 
     <div class="row">
         <div class="col"></div>
@@ -45,6 +54,9 @@
             <mat-icon>delete</mat-icon>Delete</div>
         <div mat-menu-item>
             <mat-icon>content_copy</mat-icon>Make a copy
+        </div>
+        <div mat-menu-item>
+            <mat-icon (click)="showInfo()">content_copy</mat-icon>Info
         </div>
         <button mat-menu-item (click)="onContextMenuAction(item)">Action 1</button>
     </ng-template>
