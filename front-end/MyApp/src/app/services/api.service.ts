@@ -134,12 +134,8 @@ export class ApiService {
 
   }
 
-<<<<<<< HEAD
   async delete(path: string) {
     // TODO FIX AUTH
-=======
-  async copyFile(path: string) {
->>>>>>> c60766c2a64d7059222a0448869d5e8c3c7e0c74
     try {
       await this.http.post(environment.endpoint + API_DELETE, {
         source: path
